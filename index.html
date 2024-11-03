@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="container relative w-[500px] h-[300px] overflow-hidden rounded-lg shadow-lg bg-white">
+        <!-- Image -->
+        <img src="https://images.unsplash.com/photo-1620435363451-b84b06e6de72?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bmF0dXJlJTIwaW1hZ2VzfGVufDB8fDB8fHww" 
+             alt="smith"  
+             class="image w-full h-full object-cover transition-opacity duration-300 ease-in-out">
+        
+        <!-- Arrows -->
+        <div class="arrow flex absolute top-1/2 transform -translate-y-1/2 w-full justify-between px-4">
+            <div class="bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-full p-2 cursor-pointer">
+                <i class="fa-thin fa-arrow-left left"></i>
+            </div>
+            <div class="bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-full p-2 cursor-pointer">
+                <i class="fa-thin fa-arrow-right right"></i>
+            </div>
+        </div>
+        
+        <!-- Indicators -->
+        <div class="indicaterss absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+            <!-- Indicators will be added dynamically -->
+        </div>
+    </div>
+
+<script>
+    let imageArray = [
+        {
+            img1: "https://img.freepik.com/free-photo/natures-beauty-captured-colorful-flower-close-up-generative-ai_188544-8593.jpg?size=626&ext=jpg&ga=GA1.1.1141335507.1717718400&semt=sph",
+            alt: "flower"
+        },
+        {
+            img1: "https://hips.hearstapps.com/hmg-prod/images/hummingbird-feeding-at-bleeding-heart-bloom-royalty-free-image-1656108706.jpg?crop=0.536xw:1.00xh;0.116xw,0&resize=980:*",
+            alt: "Bird"
+        },
+        {
+            img1: "https://thumbs.dreamstime.com/b/spring-flowers-blue-crocuses-drops-water-backgro-background-tracks-rain-113784722.jpg",
+            alt: "Blue flower"
+        },
+        {
+            img1: "https://i.pinimg.com/736x/0e/89/37/0e8937e6a2aa4d547fc62d5aa218d1dd.jpg",
+            alt: "mix flower"
+        }
+    ]
+
+    let currentIndex = 0;
+
+    const container = document.querySelector(".container");
+    const image = document.querySelector(".image");
+    const leftArrow = document.querySelector(".left");
+    const rightArrow = document.querySelector(".right");
+    const indicaters = document.querySelector(".indicaterss");
+
+    // Create indicators
+    for (let index = 0; index < imageArray.length; index++) {
+        const indicator = document.createElement("div");
+        indicator.classList.add("indicator", "h-3", "w-3", "bg-gray-300", "rounded-full", "cursor-pointer", "transition", "duration-300", "hover:bg-gray-500");
+        indicator.setAttribute("data-index", index);
+        indicaters.appendChild(indicator);
+    }
+
+    const indicators = document.querySelectorAll(".indicator");
+
+    function showImage(index) {
+        image.src = imageArray[index].img1;
+        image.alt = imageArray[index].alt;
+
+        // Update active indicator
+        indicators.forEach((indicator, i) => indicator.classList.remove("bg-blue-500"));
+        indicators[index].classList.add("bg-blue-500");
+    }
+
+    indicators.forEach((indi) => {
+        indi.addEventListener("click", () => {
+            const index = parseInt(indi.getAttribute("data-index"));
+            currentIndex = index;
+            showImage(index);
+        });
+    });
+
+    rightArrow.addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % imageArray.length;
+        showImage(currentIndex);
+    });
+
+    leftArrow.addEventListener("click", () => {
+        currentIndex = (currentIndex - 1 + imageArray.length) % imageArray.length;
+        showImage(currentIndex);
+    });
+
+    // Auto-play images
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % imageArray.length;
+        showImage(currentIndex);
+    }, 2000);
+</script>
+</body>
+</html>
